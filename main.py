@@ -50,12 +50,10 @@ async def analyze_weibull2(request: Request):
     cdf_values = weibull_min.cdf(extended_time_points, beta, loc=0, scale=eta)
     pdf_values = weibull_min.pdf(extended_time_points, beta, loc=0, scale=eta)
     
-    # Note: 'mean' and 'std' from weibull_min are for the probability distribution,
-    # not for the scaled error counts. You might want to report the fitted parameters instead.
     final_data = [
         WeibullRecord(
             time=t,
-            forecast=forecast, # or compute another measure if needed
+            forecast=forecast,
         )
         for t, cdf, pdf, forecast in zip(extended_time_points, cdf_values, pdf_values, forecast_values)
     ]
