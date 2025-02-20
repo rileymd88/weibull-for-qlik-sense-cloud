@@ -45,17 +45,13 @@ async def analyze_weibull2(request: Request):
 
     # Compute forecast error counts using the fitted scaled Weibull PDF.
     forecast_values = weibull_pdf(extended_time_points, A, beta, eta)
-
-    # Optionally, compute the underlying (unscaled) Weibull CDF/PDF if needed.
-    cdf_values = weibull_min.cdf(extended_time_points, beta, loc=0, scale=eta)
-    pdf_values = weibull_min.pdf(extended_time_points, beta, loc=0, scale=eta)
     
     final_data = [
         WeibullRecord(
             time=t,
             forecast=forecast,
         )
-        for t, cdf, pdf, forecast in zip(extended_time_points, cdf_values, pdf_values, forecast_values)
+        for t, forecast in zip(extended_time_points, forecast_values)
     ]
     
     return final_data
